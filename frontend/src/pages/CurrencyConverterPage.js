@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Box, Container, Grid } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CurrencySelector from '../components/CurrencySelector';
 import NumberInput from '../components/NumberInput';
 import APISelector from '../components/APISelector';
@@ -55,20 +56,25 @@ function CurrencyConverterPage() {
     <Box sx={{ flexGrow: 1 }}>
       <NavBar />
       <Container sx={{ border: '1px dashed grey', p: 2, mt: 2 }}>
+       <Grid container spacing={2}>
+         <Grid item xs={12}>
         <APISelector
           apis={apis}
           selectedApi={selectedAPI}
           onChange={handleAPIChange}
         />
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
+         </Grid>
+         <Grid item xs={4}>
             <CurrencySelector
               currencies={currencies}
               selectedCurrency={fromCurrency}
               onChange={handleFromCurrencyChange}
             />
           </Grid>
-          <Grid item xs={6}>
+         <Grid item xs={4} display="flex" justifyContent="center">
+           <ArrowForwardIcon style={{height: '120px', fontSize: '35px', marginRight: '60px'}}/>
+         </Grid> 
+         <Grid item xs={4}>
             <CurrencySelector
               currencies={currencies}
               selectedCurrency={toCurrency}
@@ -81,9 +87,13 @@ function CurrencyConverterPage() {
               onChange={handleAmountChange}
             />
           </Grid>
+         <Grid item xs={12}>
+           <button onClick={handleConvert}>Convert</button>
         </Grid>
-        <button onClick={handleConvert}>Convert</button>
+         <Grid item xs={12}>
         <div id="update_on_convert"></div>
+         </Grid>
+       </Grid>
       </Container>
     </Box>
     );
