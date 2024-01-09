@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import CurrencySelector from '../components/CurrencySelector';
 import NumberInput from '../components/NumberInput';
 import APISelector from '../components/APISelector';
-import axios from 'axios';
+import NavBar from '../components/Navbar';
 
 const currencies = ['USD', 'EUR', 'GBP', 'VND']; // TODO: request backend for list of currencies
 const apis = ['Exchange', 'Vietcombank', 'Techcombank']; /// TODO: request backend for list of apis
@@ -51,7 +52,7 @@ function CurrencyConverterPage() {
   }
   return (
     <div>
-      <h1>Currency Converter</h1>
+      <NavBar />
       <CurrencySelector
         currencies={currencies}
         selectedCurrency={fromCurrency}
