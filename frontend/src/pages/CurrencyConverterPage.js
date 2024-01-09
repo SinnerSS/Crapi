@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Box, Container, Grid } from '@mui/material';
 import CurrencySelector from '../components/CurrencySelector';
 import NumberInput from '../components/NumberInput';
 import APISelector from '../components/APISelector';
@@ -51,31 +52,41 @@ function CurrencyConverterPage() {
     }
   }
   return (
-    <div>
+    <Box sx={{ flexGrow: 1 }}>
       <NavBar />
-      <CurrencySelector
-        currencies={currencies}
-        selectedCurrency={fromCurrency}
-        onChange={handleFromCurrencyChange}
-      />
-      <CurrencySelector
-        currencies={currencies}
-        selectedCurrency={toCurrency}
-        onChange={handleToCurrencyChange}
-      />
-      <NumberInput
-        value={amount}
-        onChange={handleAmountChange}
-      />
-      <APISelector
-        apis={apis}
-        selectedApi={selectedAPI}
-        onChange={handleAPIChange}
-      />
-      <button onClick={handleConvert}>Convert</button>
-      <div id="update_on_convert"></div>
-    </div>
-  );
+      <Container sx={{ border: '1px dashed grey', p: 2, mt: 2 }}>
+        <APISelector
+          apis={apis}
+          selectedApi={selectedAPI}
+          onChange={handleAPIChange}
+        />
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <CurrencySelector
+              currencies={currencies}
+              selectedCurrency={fromCurrency}
+              onChange={handleFromCurrencyChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <CurrencySelector
+              currencies={currencies}
+              selectedCurrency={toCurrency}
+              onChange={handleToCurrencyChange}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <NumberInput
+              value={amount}
+              onChange={handleAmountChange}
+            />
+          </Grid>
+        </Grid>
+        <button onClick={handleConvert}>Convert</button>
+        <div id="update_on_convert"></div>
+      </Container>
+    </Box>
+    );
 }
 
 export default CurrencyConverterPage;
