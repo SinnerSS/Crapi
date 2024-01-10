@@ -3,6 +3,7 @@ import axios from 'axios';
 import { createTheme, ThemeProvider, Box, Container, Grid } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField';
 import blue from '@mui/material/colors/blue';
 import CurrencySelector from '../components/CurrencySelector';
 import NumberInput from '../components/NumberInput';
@@ -11,13 +12,13 @@ import NavBar from '../components/Navbar';
 
 
 const buttonTheme = createTheme({ palette: { primary: blue } })
-let message = ""
 
 function CurrencyConverterPage() {
+  const [selectedAPI, setSelectedAPI] = useState('Exchange');
   const [fromCurrency, setFromCurrency] = useState('USD');
   const [toCurrency, setToCurrency] = useState('EUR');
   const [amount, setAmount] = useState('');
-  const [selectedAPI, setSelectedAPI] = useState('Exchange');
+  const [result, setResult] = useState('');
 
   function handleFromCurrencyChange(event, newValue, selectedOption) {
     setFromCurrency(newValue);
@@ -44,8 +45,7 @@ function CurrencyConverterPage() {
         selectedAPI
       })
       .then((response) => {
-        message = response.data.result
-        document.getElementById("update_on_convert").textContent = message
+        setResult(response.data.result)
         console.log(response.data);
       })
       .catch((error) => {
@@ -81,11 +81,17 @@ function CurrencyConverterPage() {
               onChange={handleToCurrencyChange}
            />
          </Grid>
-         <Grid item xs={6}>
+         <Grid item xs={4}>
            <NumberInput
               value={amount}
               onChange={handleAmountChange}
            />
+         </Grid>
+         <Grid item xs={4} display="flex" justifyContent="center">
+           <ArrowForwardIcon style={{height: '120px', fontSize: '35px', marginRight: '60px'}}/>
+         </Grid> 
+         <Grid item xs={4}>
+            <TextField value={result} style={{marginTop: '32px'}}></TextField>
          </Grid>
          <Grid item xs={12}>
            <ThemeProvider theme={buttonTheme}>
