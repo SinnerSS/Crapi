@@ -13,3 +13,19 @@ def fetch_exchange_rate(base_currency, target_currency, api_endpoint):
     return techcombank_handler.fetch_exchange_rate(base_currency, target_currency)
 
   return None
+
+def fetch_historical_rate(date, currency): 
+  url = Config.FIXER_URL + f"{date}?access_key={os.environ.get('FIXER_API_KEY')}"
+
+  try:
+    response = requests.get(url)
+
+    data = response.json()
+
+    return data['rates'][currency]
+    
+  except RequestException as e:
+    print(f"Request Exception: {e}")
+    return None
+
+  return None
