@@ -1,16 +1,21 @@
 import React from 'react';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
-function CurrencySelector({ currencies, selectedCurrency, onChange }) {
+const currencies = ['USD', 'EUR', 'GBP', 'VND']; // TODO: request backend for list of currencies
+
+function CurrencySelector({ label, selectedCurrency, onChange }) {
   return (
     <div>
-      <label>Select Currency:</label>
-      <select value={selectedCurrency} onChange={onChange}>
-        {currencies.map((currency) => (
-          <option key={currency} value={currency}>
-            {currency}
-          </option>
-        ))}
-      </select>
+      <Typography variant="h5"><b>{label}</b></Typography>
+      <Autocomplete
+        options={currencies}
+        value={selectedCurrency}
+        onChange={onChange}
+        renderInput={(params) => <TextField {...params} label="Currency" />}
+        sx={{ mt: '10px', maxWidth: '300px'}}
+      />
     </div>
   );
 };

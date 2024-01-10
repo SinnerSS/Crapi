@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Box, Container, Grid } from '@mui/material';
+import { createTheme, ThemeProvider, Box, Container, Grid } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Button from '@mui/material/Button'
+import blue from '@mui/material/colors/blue';
 import CurrencySelector from '../components/CurrencySelector';
 import NumberInput from '../components/NumberInput';
 import APISelector from '../components/APISelector';
 import NavBar from '../components/Navbar';
 
-const currencies = ['USD', 'EUR', 'GBP', 'VND']; // TODO: request backend for list of currencies
-const apis = ['Exchange', 'Vietcombank', 'Techcombank']; /// TODO: request backend for list of apis
 
+const buttonTheme = createTheme({ palette: { primary: blue } })
 let message = ""
 
 function CurrencyConverterPage() {
@@ -18,20 +19,20 @@ function CurrencyConverterPage() {
   const [amount, setAmount] = useState('');
   const [selectedAPI, setSelectedAPI] = useState('Exchange');
 
-  function handleFromCurrencyChange(event) {
-    setFromCurrency(event.target.value);
+  function handleFromCurrencyChange(event, newValue, selectedOption) {
+    setFromCurrency(newValue);
   };
 
-  function handleToCurrencyChange(event) {
-    setToCurrency(event.target.value);
+  function handleToCurrencyChange(event, newValue, selectedOption) {
+    setToCurrency(newValue);
   };
 
   function handleAmountChange(event) {
     setAmount(event.target.value);
   };
 
-  function handleAPIChange(event) {
-    setSelectedAPI(event.target.value);
+  function handleAPIChange(event, newValue, selectOption) {
+    setSelectedAPI(newValue);
   };
 
   function handleConvert() {
@@ -54,49 +55,47 @@ function CurrencyConverterPage() {
   }
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <NavBar />
-      <Container sx={{ border: '1px dashed grey', p: 2, mt: 2 }}>
+     <NavBar />
+     <Container sx={{ border: '1px dashed grey', p: 2, mt: 2 }}>
        <Grid container spacing={2}>
          <Grid item xs={12}>
-        <APISelector
-          apis={apis}
-          selectedApi={selectedAPI}
-          onChange={handleAPIChange}
-        />
+           <APISelector
+              selectedApi={selectedAPI}
+              onChange={handleAPIChange}
+           />
          </Grid>
          <Grid item xs={4}>
-            <CurrencySelector
-              currencies={currencies}
+           <CurrencySelector
+              label='From'
               selectedCurrency={fromCurrency}
               onChange={handleFromCurrencyChange}
-            />
-          </Grid>
+           />
+         </Grid>
          <Grid item xs={4} display="flex" justifyContent="center">
            <ArrowForwardIcon style={{height: '120px', fontSize: '35px', marginRight: '60px'}}/>
          </Grid> 
          <Grid item xs={4}>
-            <CurrencySelector
-              currencies={currencies}
+           <CurrencySelector
+              label='To'
               selectedCurrency={toCurrency}
               onChange={handleToCurrencyChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <NumberInput
+           />
+         </Grid>
+         <Grid item xs={6}>
+           <NumberInput
               value={amount}
               onChange={handleAmountChange}
-            />
-          </Grid>
+           />
+         </Grid>
          <Grid item xs={12}>
-           <button onClick={handleConvert}>Convert</button>
-        </Grid>
-         <Grid item xs={12}>
-        <div id="update_on_convert"></div>
+           <ThemeProvider theme={buttonTheme}>
+             <Button variant="contained" color= "primary" onClick={handleConvert}>Convert</Button>
+           </ThemeProvider>
          </Grid>
        </Grid>
-      </Container>
+     </Container>
     </Box>
-    );
+  );
 }
 
 export default CurrencyConverterPage;
