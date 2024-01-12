@@ -3,9 +3,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-const currencies = ['USD', 'EUR', 'GBP', 'VND']; // TODO: request backend for list of currencies
-
-function CurrencySelector({ label, selectedCurrency, onChange }) {
+function CurrencySelector({ label, currencies, selectedCurrency, onChange }) {
   return (
     <div>
       <Typography variant="h5"><b>{label}</b></Typography>
