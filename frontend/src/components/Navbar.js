@@ -47,6 +47,9 @@ function NavBar() {
             <Button component={Link} to="/" color="inherit">
               Converter
             </Button>
+            <Button component={Link} to="/fluctuation" color="inherit">
+              Fluctuation
+            </Button>
           </ThemeProvider>
         </div>
       </Toolbar>
