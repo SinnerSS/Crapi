@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ..api import currency_handler
+from ..api import api_handler
 
 fluctuation_bp = Blueprint('fluctuation', __name__)
 
@@ -11,7 +11,7 @@ def fluctuation():
         date = data.get("date")
         currency = data.get("currency")
 
-        result = currency_handler.fetch_historical_rate(date, currency)
+        result = api_handler.fetch_historical_rate(date, currency)
 
         return jsonify({'result': result}), 200
     else:

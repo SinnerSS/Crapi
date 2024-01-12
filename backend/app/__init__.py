@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask
-from .services import currency_service, fluctuation_service
+from .services import convert_service, fluctuation_service
 
 
 def create_app(test_config=None):
@@ -25,7 +25,7 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    app.register_blueprint(currency_service.currency_bp)
+    app.register_blueprint(convert_service.convert_bp)
     app.register_blueprint(fluctuation_service.fluctuation_bp)
 
     return app

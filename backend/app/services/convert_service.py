@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify
-from ..api import currency_handler
+from ..api import api_handler
 
-currency_bp = Blueprint('currency', __name__)
+convert_bp = Blueprint('convert', __name__)
 
-@currency_bp.route('/convert', methods=['POST'])
+@convert_bp.route('/convert', methods=['POST'])
 def convert():
     if request.method == 'POST':
         data = request.json
@@ -13,7 +13,7 @@ def convert():
         amount = data.get('amount')
         selected_api = data.get('selectedAPI')
 
-        rate = currency_handler.fetch_exchange_rate(from_currency, to_currency, selected_api)
+        rate = api_handler.fetch_exchange_rate(from_currency, to_currency, selected_api)
 
         result = float(amount) * float(rate)
 
