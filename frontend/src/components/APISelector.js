@@ -3,7 +3,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-const apis = ['Exchange', 'Vietcombank', 'Techcombank']; /// TODO: request backend for list of apis
+const apis = ['Exchange', 'Vietcombank', 'Techcombank', 'Fixer']; /// TODO: request backend for list of apis
 
 function APISelector({ selectedApi, onChange }) {
   return (
