@@ -9,16 +9,23 @@ function FluctuationPage() {
   const [dates, setDates] = useState([]);
   const [rates, setRates] = useState([]);
   const [currencyList, setCurrencyList] = useState([]);
-  const [currency, setCurrency] = useState('');
+  const [currency, setCurrency] = useState('VND');
 
   function handleCurrencyChange(event, newValue, selectedOption) {
     setCurrency(newValue);
+  }
+
+  const dateFormater = (date) => {
+    let month = date.toLocaleString("default", { month: "long" });
+    let day = date.toLocaleString("default", { day: "2-digit" });
+    return `${month} ${day}`
   }
 
   useEffect(() => {
     const result = Array.from({ length: 7 }, (_, i) => {
       const date = new Date();
       date.setDate(date.getDate() - i);
+      date.setHours(0, 0, 0, 0)
       return date;
     });
     console.log(result);
@@ -60,7 +67,7 @@ function FluctuationPage() {
         } else {
           try {
             const response = await axios.post('/convert', {
-              fromCurrency: 'USD',
+              fromCurrency: 'VND',
               toCurrency: currency,
               amount: 1,
               selectedAPI: 'Fixer'
@@ -91,15 +98,17 @@ function FluctuationPage() {
           xAxis={[{ 
             scaleType: 'time',
             data: dates,
-            max: dates[0]
+            valueFormatter: dateFormater,
           }]}
           series={[
             {
-              data: rates
+              label: `${currency}/VND`,       
+              data: rates,
+              highlightScope: 'item'
             },
           ]}
-          width={500}
-          height={300}
+          width={750}
+          height={450}
         />
       </Container>
     </Box>

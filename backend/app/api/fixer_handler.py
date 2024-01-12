@@ -34,7 +34,7 @@ def fetch_historical_rate(date, currency) :
 
     data = response.json()
 
-    return data['rates'][currency] / data['rates']['USD']
+    return data['rates'][currency] / data['rates']['VND']
     
   except RequestException as e:
     print(f"Request Exception: {e}")
