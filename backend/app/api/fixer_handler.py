@@ -46,7 +46,7 @@ def fetch_symbol_list() :
   url = Config.FIXER_URL + f"symbols?access_key={os.environ.get('FIXER_API_KEY')}"
 
   try:
-    response = session.get(url)
+    response = requests.get(url)
 
     data = response.json()
 

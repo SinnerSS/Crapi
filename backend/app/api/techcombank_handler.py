@@ -31,7 +31,7 @@ def fetch_exchange_rate(base_currency, target_currency) :
 
   return None
 
-def fetch_symbols_list() :
+def fetch_symbol_list() :
   url = Config.TECHCOMBANK_RATE_URL
 
   try:
@@ -42,7 +42,7 @@ def fetch_symbols_list() :
 
     data[0]['spotRate'].append({'sourceCurrency': 'VND', 'bidRateCK': 1})
     
-    symbols = [spot_rate['label'] for spot_rate in data[0]['spotRate']]
+    symbols = [spot_rate['sourceCurrency'] for spot_rate in data[0]['spotRate']]
 
     return symbols
   except requests.RequestException as e:

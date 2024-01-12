@@ -29,7 +29,7 @@ def fetch_exchange_rate(base_currency, target_currency) :
 
   return None
 
-def fetch_symbols_list() :
+def fetch_symbol_list() :
   url = Config.VIETCOMBANK_RATE_URL
 
   try:
