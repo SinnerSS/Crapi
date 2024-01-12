@@ -5,12 +5,14 @@ import '@fontsource/roboto/700.css'
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CurrencyConverterPage from './pages/CurrencyConverterPage';
+import FluctuationPage from './pages/FluctuationPage'
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<CurrencyConverterPage />} />
+        <Route path="/fluctuation" element={<FluctuationPage />} />
       </Routes>
     </Router>
   );
