@@ -28,3 +28,21 @@ def fetch_exchange_rate(base_currency, target_currency) :
     return None
 
   return None
+
+def fetch_symbols_list() :
+  url = Config.VIETCOMBANK_RATE_URL
+
+  try:
+    response = session.get(url);
+    
+    root = ET.fromstring(response.content)
+    root.append(ET.Element('Exrate', CurrencyCode='VND', CurrencyName='VIETNAMESE DONG', Buy='1', Transfer='1', Sell='1'))
+        
+    symbols = [exrate.attrib['CurrencyCode'] for exrate in root.findall('Exrate')]
+
+    return symbols
+  except requests.RequestException as e:
+    print(f"Request Exception: {e}")
+    return None
+  
+  return None
