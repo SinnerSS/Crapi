@@ -19,3 +19,14 @@ def fetch_exchange_rate(base_currency, target_currency, api_endpoint):
 
 def fetch_historical_rate(date, currency): 
   return fixer_handler.fetch_historical_rate(date, currency)
+
+def fetch_symbol_list(api):
+  match api:
+    case "Exchange":
+      return exchange_rate_handler.fetch_symbol_list()
+    case "Vietcombank":
+      return vietcombank_handler.fetch_symbol_list()
+    case "Techcombank":
+      return techcombank_handler.fetch_symbol_list()
+    case "Fixer":
+      return fixer_handler.fetch_symbol_list()

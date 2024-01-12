@@ -14,9 +14,10 @@ import NavBar from '../components/Navbar';
 const buttonTheme = createTheme({ palette: { primary: blue } })
 
 function CurrencyConverterPage() {
-  const [selectedAPI, setSelectedAPI] = useState('Exchange');
-  const [fromCurrency, setFromCurrency] = useState('USD');
-  const [toCurrency, setToCurrency] = useState('EUR');
+  const [selectedAPI, setSelectedAPI] = useState('');
+  const [currencyList, setCurrencyList] = useState([]);
+  const [fromCurrency, setFromCurrency] = useState('');
+  const [toCurrency, setToCurrency] = useState('');
   const [amount, setAmount] = useState('');
   const [result, setResult] = useState('');
 
@@ -34,11 +35,23 @@ function CurrencyConverterPage() {
 
   function handleAPIChange(event, newValue, selectOption) {
     setSelectedAPI(newValue);
+
+    if(newValue!=='') {
+      axios.post('/info/symbols', {
+        api: newValue
+      })
+      .then((response) => {
+        setCurrencyList(response.data.result);
+      })
+      .catch((error) => {
+        console.error('Error fetching data: ', error);
+      });
+    }
   };
 
   function handleConvert() {
     if(amount) {
-      axios.post('convert', {
+      axios.post('/convert', {
         fromCurrency,
         toCurrency,
         amount,
@@ -67,6 +80,7 @@ function CurrencyConverterPage() {
          <Grid item xs={4}>
            <CurrencySelector
               label='From'
+              currencies={currencyList}
               selectedCurrency={fromCurrency}
               onChange={handleFromCurrencyChange}
            />
@@ -77,6 +91,7 @@ function CurrencyConverterPage() {
          <Grid item xs={4}>
            <CurrencySelector
               label='To'
+              currencies={currencyList}
               selectedCurrency={toCurrency}
               onChange={handleToCurrencyChange}
            />

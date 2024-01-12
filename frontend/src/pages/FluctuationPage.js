@@ -6,9 +6,10 @@ import NavBar from '../components/Navbar';
 import CurrencySelector from '../components/CurrencySelector';
 
 function FluctuationPage() {
-  const [dates, setDates] = useState([])
+  const [dates, setDates] = useState([]);
   const [rates, setRates] = useState([]);
-  const [currency, setCurrency] = useState('VND');
+  const [currencyList, setCurrencyList] = useState([]);
+  const [currency, setCurrency] = useState('');
 
   function handleCurrencyChange(event, newValue, selectedOption) {
     setCurrency(newValue);
@@ -22,6 +23,16 @@ function FluctuationPage() {
     });
     console.log(result);
     setDates(result);
+
+    axios.post('/info/symbols', {
+      api: 'Fixer' 
+    })
+    .then((response) => {
+      setCurrencyList(response.data.result);
+    })
+    .catch((error) => {
+      console.error('Error fetching data: ', error);
+    });
   }, [])
 
   useEffect(() => {
@@ -63,7 +74,7 @@ function FluctuationPage() {
       setRates(result);
     };
 
-    fetchData();
+    if (currency!=='') fetchData();
   }, [dates, currency]);
 
   return (
@@ -72,6 +83,7 @@ function FluctuationPage() {
       <Container sx={{ display: 'flex', flexDirection: 'column', border: '1px dashed grey', justifyContent: 'center', alignItems: 'center', p: 2, mt: 2 }}>
         <CurrencySelector
           label="Select currency"
+          currencies={currencyList}
           selectedCurrency={currency}
           onChange={handleCurrencyChange}
         />

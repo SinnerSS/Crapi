@@ -42,3 +42,17 @@ def fetch_historical_rate(date, currency) :
 
   return None
 
+def fetch_symbol_list() :
+  url = Config.FIXER_URL + f"symbols?access_key={os.environ.get('FIXER_API_KEY')}"
+
+  try:
+    response = requests.get(url)
+
+    data = response.json()
+
+    return list(data['symbols'].keys())
+  except RequestException as e:
+    print(f"Request Exception: {e}")
+    return None
+  
+  return None
