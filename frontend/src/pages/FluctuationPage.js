@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Box } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { LineChart } from "@mui/x-charts";
 import NavBar from '../components/Navbar';
 import CurrencySelector from '../components/CurrencySelector';
 
 function FluctuationPage() {
+  const [dates, setDates] = useState([])
   const [rates, setRates] = useState([]);
   const [currency, setCurrency] = useState('VND');
 
@@ -14,56 +15,81 @@ function FluctuationPage() {
   }
 
   useEffect(() => {
+    const result = Array.from({ length: 7 }, (_, i) => {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      return date;
+    });
+    console.log(result);
+    setDates(result);
+  }, [])
+
+  useEffect(() => {
     const fetchData = async () => {
-      let dates = [];
-      for (let i = 0; i < 7; i++) {
-        let date = new Date();
-        date.setDate(date.getDate() - i);
-        dates.push(date);
-      }
+      const current = new Date();
       let result = [];
 
       for (const date of dates) {
-        let year = date.toLocaleString("default", { year: "numeric" });
-        let month = date.toLocaleString("default", { month: "2-digit" });
-        let day = date.toLocaleString("default", { day: "2-digit" });
+        if (date.getDate()!==current.getDate()) {
+          let year = date.toLocaleString("default", { year: "numeric" });
+          let month = date.toLocaleString("default", { month: "2-digit" });
+          let day = date.toLocaleString("default", { day: "2-digit" });
 
-        let formattedDate = `${year}-${month}-${day}`;
+          let formattedDate = `${year}-${month}-${day}`;
 
-        try {
-          const response = await axios.post('/fluctuation', {
-            date: formattedDate,
-            currency: currency
-          });
-          result.push(response.data.result);
-        } catch (error) {
-          console.log('Error fetching data:', error);
+          try {
+            const response = await axios.post('/fluctuation', {
+              date: formattedDate,
+              currency: currency
+            });
+            result.push(response.data.result);
+          } catch (error) {
+            console.log('Error fetching data:', error);
+          }
+        } else {
+          try {
+            const response = await axios.post('/convert', {
+              fromCurrency: 'USD',
+              toCurrency: currency,
+              amount: 1,
+              selectedAPI: 'Fixer'
+            })
+            result.push(response.data.result);
+          } catch (error) {
+            console.log('Error fetching data:', error);
+          }
         }
       }
       setRates(result);
     };
 
     fetchData();
-  }, [currency]);
+  }, [dates, currency]);
 
   return (
     <Box>
       <NavBar />
-      <CurrencySelector
-        label="Select currency"
-        selectedCurrency={currency}
-        onChange={handleCurrencyChange}
-      />
-       <LineChart
-        xAxis={[{ data: [1, 2, 3, 4, 5, 6, 7] }]}
-        series={[
-          {
-            data: rates
-          },
-        ]}
-        width={500}
-        height={300}
-      />
+      <Container sx={{ display: 'flex', flexDirection: 'column', border: '1px dashed grey', justifyContent: 'center', alignItems: 'center', p: 2, mt: 2 }}>
+        <CurrencySelector
+          label="Select currency"
+          selectedCurrency={currency}
+          onChange={handleCurrencyChange}
+        />
+        <LineChart 
+          xAxis={[{ 
+            scaleType: 'time',
+            data: dates,
+            max: dates[0]
+          }]}
+          series={[
+            {
+              data: rates
+            },
+          ]}
+          width={500}
+          height={300}
+        />
+      </Container>
     </Box>
   );
 }
