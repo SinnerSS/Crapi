@@ -1,8 +1,10 @@
-import requests, requests_cache
+import requests
+from requests_cache import SQLiteCache, CachedSession
 from datetime import date
 from config import Config
 
-#requests_cache.install_cache('techcombank_data', backend='sqlite', expire_after=86400)
+backend = SQLiteCache('cache/techcombank_cache')
+session = CachedSession(backend=backend, timeout=86400)
 
 def fetch_exchange_rate(base_currency, target_currency) :
   current_date = date.today()
@@ -11,15 +13,13 @@ def fetch_exchange_rate(base_currency, target_currency) :
 
   try:
     headers = {'User-Agent': 'Mozilla/5.0'}
-    response = requests.get(url, headers=headers)
+    response = session.get(url, headers=headers)
     
     data = response.json()
 
     data[0]['spotRate'].append({'sourceCurrency': 'VND', 'bidRateCK': 1})
     for spot_rate in data[0]['spotRate'] :
-      print(spot_rate)
       if spot_rate['sourceCurrency'] == base_currency:
-        print('Found base')
         base_rate = spot_rate['bidRateCK']
       elif spot_rate['sourceCurrency'] == target_currency:
         target_rate = spot_rate['bidRateCK']

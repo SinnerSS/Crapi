@@ -1,13 +1,15 @@
-import requests, requests_cache, os
+import requests, os
+from requests_cache import SQLiteCache, CachedSession 
 from config import Config
 
-requests_cache.install_cache('exchange_rate_data', backend='sqlite',expire_after=3600)
+backend = SQLiteCache('cache/exchange_rate_cache')
+session = CachedSession(backend=backend, timeout=3600)
 
 def fetch_exchange_rate(base_currency, target_currency) :
   url = Config.EXCHANGE_RATE_URL + f"?access_key={os.environ.get('EXCHANGE_RATE_API_KEY')}"
 
   try:
-    response = requests.get(url)
+    response = session.get(url)
 
     data = response.json()
     data['rates']['EUR'] = 1
