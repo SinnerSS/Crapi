@@ -30,7 +30,7 @@ const buttonTheme = createTheme({
           },
           '&:hover::after': {
             width: '100%',
-          },
+          },  
         },
       },
     },
@@ -49,6 +49,9 @@ function NavBar() {
             </Button>
             <Button component={Link} to="/fluctuation" color="inherit">
               Fluctuation
+            </Button>
+            <Button component={Link} to="/trade" color="inherit">
+              Trade
             </Button>
           </ThemeProvider>
         </div>

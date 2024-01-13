@@ -6,6 +6,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CurrencyConverterPage from './pages/CurrencyConverterPage';
 import FluctuationPage from './pages/FluctuationPage'
+import TradePage from './pages/TradePage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<CurrencyConverterPage />} />
         <Route path="/fluctuation" element={<FluctuationPage />} />
+        <Route path="/trade" element={<TradePage />} />
       </Routes>
     </Router>
   );
