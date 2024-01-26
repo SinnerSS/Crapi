@@ -1,10 +1,10 @@
 from flask import Blueprint, request, jsonify
 from ..api import api_handler
 
-fluctuation_bp = Blueprint('fluctuation', __name__)
+trend_bp = Blueprint('trend', __name__)
 
-@fluctuation_bp.route('/fluctuation', methods=['POST'])
-def fluctuation():
+@trend_bp.route('/trend', methods=['POST'])
+def trend():
     if request.method == 'POST':
         data = request.json
 

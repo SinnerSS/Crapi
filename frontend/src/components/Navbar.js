@@ -47,8 +47,8 @@ function NavBar() {
             <Button component={Link} to="/" color="inherit">
               Converter
             </Button>
-            <Button component={Link} to="/fluctuation" color="inherit">
-              Fluctuation
+            <Button component={Link} to="/trend" color="inherit">
+              Trend
             </Button>
             <Button component={Link} to="/trade" color="inherit">
               Trade

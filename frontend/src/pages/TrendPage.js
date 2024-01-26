@@ -5,7 +5,7 @@ import { LineChart } from "@mui/x-charts";
 import NavBar from '../components/Navbar';
 import CurrencySelector from '../components/CurrencySelector';
 
-function FluctuationPage() {
+function TrendPage() {
   const [dates, setDates] = useState([]);
   const [rates, setRates] = useState([]);
   const [currencyList, setCurrencyList] = useState([]);
@@ -56,7 +56,7 @@ function FluctuationPage() {
           let formattedDate = `${year}-${month}-${day}`;
 
           try {
-            const response = await axios.post('/fluctuation', {
+            const response = await axios.post('/trend', {
               date: formattedDate,
               currency: currency
             });
@@ -115,4 +115,4 @@ function FluctuationPage() {
   );
 }
 
-export default FluctuationPage;
+export default TrendPage;

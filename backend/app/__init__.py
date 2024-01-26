@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask
-from .services import convert_service, fluctuation_service, info_service
+from .services import convert_service, trend_service, info_service
 
 
 def create_app(test_config=None):
@@ -26,7 +26,7 @@ def create_app(test_config=None):
         pass
 
     app.register_blueprint(convert_service.convert_bp)
-    app.register_blueprint(fluctuation_service.fluctuation_bp)
+    app.register_blueprint(trend_service.trend_bp)
     app.register_blueprint(info_service.info_bp)
 
     return app

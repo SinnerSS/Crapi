@@ -23,14 +23,14 @@ def fetch_exchange_rate(base_currency, target_currency) :
 
   return None
 
-fluctuation_backend = SQLiteCache('cache/fixer_fluctuation_cache')
-fluctuation_database = CachedSession(backend=fluctuation_backend, timeout=NEVER_EXPIRE)
+trend_backend = SQLiteCache('cache/fixer_trend_cache')
+trend_database = CachedSession(backend=trend_backend, timeout=NEVER_EXPIRE)
 
 def fetch_historical_rate(date, currency) :
   url = Config.FIXER_URL + f"{date}?access_key={os.environ.get('FIXER_API_KEY')}"
 
   try:
-    response = fluctuation_database.get(url)
+    response = trend_database.get(url)
 
     data = response.json()
 

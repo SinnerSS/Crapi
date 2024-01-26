@@ -5,7 +5,7 @@ import '@fontsource/roboto/700.css'
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CurrencyConverterPage from './pages/CurrencyConverterPage';
-import FluctuationPage from './pages/FluctuationPage'
+import TrendPage from './pages/TrendPage'
 import TradePage from './pages/TradePage';
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<CurrencyConverterPage />} />
-        <Route path="/fluctuation" element={<FluctuationPage />} />
+        <Route path="/trend" element={<TrendPage />} />
         <Route path="/trade" element={<TradePage />} />
       </Routes>
     </Router>
