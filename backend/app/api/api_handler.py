@@ -18,7 +18,7 @@ def fetch_exchange_rate(base_currency, target_currency, api_endpoint):
   return None
 
 def fetch_historical_rate(date, currency): 
-  return fixer_handler.fetch_historical_rate(date, currency)
+  return exchange_rate_handler.fetch_historical_rate(date, currency) # TODO: Fetch through api list till success
 
 def fetch_symbol_list(api):
   match api:

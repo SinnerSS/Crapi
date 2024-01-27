@@ -1,18 +1,57 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box, Container } from '@mui/material';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { LineChart } from "@mui/x-charts";
 import NavBar from '../components/Navbar';
 import CurrencySelector from '../components/CurrencySelector';
 
 function TrendPage() {
   const [dates, setDates] = useState([]);
+  const [timeStep, setTimeStep] = useState([])
   const [rates, setRates] = useState([]);
   const [currencyList, setCurrencyList] = useState([]);
   const [currency, setCurrency] = useState('VND');
 
   function handleCurrencyChange(event, newValue, selectedOption) {
     setCurrency(newValue);
+  }
+
+  function handleTimeStepChange(event, newValue) {
+    setTimeStep(newValue);
+
+    let days, points;
+    switch(newValue) {
+      case '7D':
+        days = 7;
+        points = 7;
+        break;
+      case '1M':
+        days = 30;
+        points = 8;
+        break;
+      case '6M':
+        days = 180;
+        points = 12;
+        break;
+      case '1Y':
+        days = 365;
+        points = 12;
+        break;
+      default: 
+        days = 7;
+        points = 7;
+    }
+    const result = Array.from({ length: points }, (_, i) => {
+      const date = new Date();
+      let step = Math.ceil(days / points);
+      date.setDate(date.getDate() - i*step);
+      date.setHours(0, 0, 0, 0);
+      return date;
+    });
+    console.log(result);
+    setDates(result);
   }
 
   const dateFormater = (date) => {
@@ -22,17 +61,8 @@ function TrendPage() {
   }
 
   useEffect(() => {
-    const result = Array.from({ length: 7 }, (_, i) => {
-      const date = new Date();
-      date.setDate(date.getDate() - i);
-      date.setHours(0, 0, 0, 0)
-      return date;
-    });
-    console.log(result);
-    setDates(result);
-
     axios.post('/info/symbols', {
-      api: 'Fixer' 
+      api: 'Exchange' 
     })
     .then((response) => {
       setCurrencyList(response.data.result);
@@ -67,8 +97,8 @@ function TrendPage() {
         } else {
           try {
             const response = await axios.post('/convert', {
-              fromCurrency: 'VND',
-              toCurrency: currency,
+              fromCurrency: currency,
+              toCurrency: 'VND',
               amount: 1,
               selectedAPI: 'Fixer'
             })
@@ -78,6 +108,7 @@ function TrendPage() {
           }
         }
       }
+      console.log(result)
       setRates(result);
     };
 
@@ -110,6 +141,20 @@ function TrendPage() {
           width={750}
           height={450}
         />
+        <ToggleButtonGroup value={timeStep} exclusive onChange={handleTimeStepChange}>
+          <ToggleButton value="7D">
+            7D
+          </ToggleButton>
+          <ToggleButton value="1M">
+            1M
+          </ToggleButton>
+          <ToggleButton value="6M">
+            6M
+          </ToggleButton>
+          <ToggleButton value="1Y">
+            1Y
+          </ToggleButton>
+        </ToggleButtonGroup>
       </Container>
     </Box>
   );
